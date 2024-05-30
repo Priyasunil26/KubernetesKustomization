@@ -1,4 +1,4 @@
-# Deploying Bold BI on Kubernetes
+# Deploy Bold BI on Kubernetes using Kustomization with an NGINX Load Balancer
 This section provides instructions on how to deploy Bold BI in different cloud cluster. Please follow the documentation below to successfully deploy the application.
 
 ## Prerequisites
@@ -16,23 +16,11 @@ Please ensure that you have fulfilled these prerequisites before proceeding with
 
 1. Create and connect to a Kubernetes cluster to deploy Bold BI. Please refer to the table below for creating and connecting to Kubernetes clusters on different cloud providers and on-premise.
 
-    (i) **Cloud Providers:**
-
     | Cloud Providers            | Cluster Creation                                                                                    | Cluster Connection                                                                                      |
     |----------------------------|----------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------|
     | Azure Kubernetes Service   | [Azure AKS Walkthrough](https://docs.microsoft.com/en-us/azure/aks/kubernetes-walkthrough-portal) | [AKS Cluster Connection](https://docs.microsoft.com/en-us/azure/aks/kubernetes-walkthrough-portal#connect-to-the-cluster) |
     | Google Kubernetes Engine   | [Google GKE Console](https://console.cloud.google.com/kubernetes)                                | [GKE Cluster Connection](https://cloud.google.com/kubernetes-engine/docs/quickstart)                     |
     | Elastic Kubernetes Service | [AWS EKS Guide](https://docs.aws.amazon.com/eks/latest/userguide/create-cluster.html)             | [EKS Cluster Connection](https://aws.amazon.com/premiumsupport/knowledge-center/eks-cluster-connection/) |
-
-    (ii) **On-Premise Clusters:**
-
-    | On-premise Cluster | Creation |
-    |--------------------|--------------------------------------------|
-    | Kind Cluster       | [Kind Cluster Quick Start](https://kind.sigs.k8s.io/docs/user/quick-start/#installation) |
-    | K0s Cluster        | [K0s Cluster Installation](https://docs.k0sproject.io/v1.27.2+k0s.0/install/) |
-    | Rancher Desktop    | [Rancher Desktop Getting Started](https://docs.rancherdesktop.io/getting-started/installation/) |
-    | Kubeadm Cluster    | [Kubeadm Cluster Setup](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/) |
-
 
 2. Create a File share instance in your storage account and note the File share name to store the shared folders for application usage.
 
@@ -59,14 +47,13 @@ Please ensure that you have fulfilled these prerequisites before proceeding with
     - **Azure Kubernetes Service (AKS):**
         - [Download AKS Kustomization.yaml](https://raw.githubusercontent.com/sivakumar-devops/kustomization-improvement/mohamed/aks/boldbi/kustomization.yaml)
 
-    - **Amazon Elastic Kubernetes Service (EKS):**
-        - [Download EKS Kustomization.yaml](https://raw.githubusercontent.com/sivakumar-devops/kustomization-improvement/mohamed/eks/boldbi/kustomization.yaml)
-
     - **Google Kubernetes Engine (GKE):**
         - [Download GKE Kustomization.yaml](https://raw.githubusercontent.com/sivakumar-devops/kustomization-improvement/mohamed/gke/boldbi/kustomization.yaml)
 
-    - **Local Cluster:**
-        - [Download Local Kustomization.yaml](https://raw.githubusercontent.com/sivakumar-devops/kustomization-improvement/mohamed/local/boldbi/kustomization.yaml)
+    - **Amazon Elastic Kubernetes Service (EKS):**
+        - [Download EKS Kustomization.yaml](https://raw.githubusercontent.com/sivakumar-devops/kustomization-improvement/mohamed/eks/boldbi/kustomization.yaml)
+
+
 
     Make sure to choose the correct Kustomization.yaml file based on your deployment target.
 
@@ -77,37 +64,51 @@ Please ensure that you have fulfilled these prerequisites before proceeding with
     | Azure File Share             | Replace the `storage account name and file share name` with `<storage_account_name>` and `<file_share_name>`, respectively, in the file.                                ![After Replacing File Storage name](images/After-replace-fileshare.png)                               |
     | GKE File Store               | Replace the `File share name and IP address` with `<file_share_name>` and `<file_share_ip_address>`, in the file.                                                 ![Replace file store name](images/replace-filestore.png)                                              |
     | Elastic File Storage for EKS | Replace the `File system ID` with `<efs_file_system_id>` in the file.                                                                                                          ![replace-fs-id](images/replace-fs-id.png)                                                                |
-    | On- premise mountpath |Replace the mount path with <Example/path/here> in the file.                                                 ![mount-path](images/on-premise-mountpath.png)                                              |
-
+    
    
 6. After connecting with your cluster, deploy the `latest Nginx ingress controller` to your cluster using the following command.
-    ```bash 
-    kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.10.0/deploy/static/provider/cloud/deploy.yaml
-    ```
+
+    | Cloud Provider                  | Installation Command                                                                                       |
+    |---------------------------------|--------------------------------------------------------------------------------------------------------|
+    | Azure Kubernetes Service (AKS)  | kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.10.0/deploy/static/provider/cloud/deploy.yaml |
+    | Google Kubernetes Engine (GKE)  | kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.10.0/deploy/static/provider/cloud/deploy.yaml                                         |
+    | Elastic Kubernetes Service (EKS)| kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.10.0/deploy/static/provider/aws/deploy.yaml  |
+   
  
     For more information about the load balancer installation, please refer to this [link](https://kubernetes.github.io/ingress-nginx/deploy/). Deploy Nginx according to your target cloud provider (AKS, GKE, EKS) by choosing the appropriate configuration.
 
-7. Run the following command to obtain the ingress IP address. If you want to use a domain name, map the external IP address obtained from the command below to the domain name in your DNS settings
+7. The latest Nginx Ingress controller has a configuration change where the default value for `allow-snippet-annotations` is set to `false`. To fix this, you need to edit the Nginx Ingress ConfigMap file and set the value to `true`.
+
+![Set Snippet value true](images/snippet-true.png)
+
+Use the following command to edit the ConfigMap:
+    
+    kubectl edit cm ingress-nginx-controller -n ingress-nginx
+
+8. Run the following command to obtain the ingress IP address. Note the ingress EXTERNAL-IP address and map it with your DNS. If you do not have the DNS and want to use the application, then you can use the ingress IP address.
+
     ```bash 
     kubectl get service/ingress-nginx-controller -n ingress-nginx
 
-8. After obtaining the External IP address, replace the `app-base URL` with your External IP address or Domain name.
+9. After obtaining the External IP address, replace the `app-base URL` with your External IP address or Domain name.
 
     ![App-Base-URL](images/app-base-url.png)
 
-9. Navigate to the folder where the deployment file were downloaded from Step 4.
-10. Run the following command to deploy Bold BI application on cluster
+10. Navigate to the folder where the deployment file were downloaded from Step 4.
+
+11. Run the following command to deploy Bold BI application on cluster
     ```bash
     kubectl apply -k .
-11. Please wait for some time until the Bold BI  application is deployed to your cluster.
 
-12. Use the following command to get the pods status.
+12. Please wait for some time until the Bold BI  application is deployed to your cluster.
+
+13. Use the following command to get the pods status.
     ```bash 
     kubectl get pods -n bold-services
 
-13. Wait until you see the applications running. Then, use the DNS or ingress IP address you obtained from Step 7 to access the application in the browser.
+14. Wait until you see the applications running. Then, use the DNS or ingress IP address you obtained from Step 8 to access the application in the browser.
 
-14. Configure the Bold BI On-Premise application startup to use the application. Please refer the following link for more details on configuring the application startup.
+15. Configure the Bold BI On-Premise application startup to use the application. Please refer the following link for more details on configuring the application startup.
 
 https://help.boldbi.com/embedded-bi/application-startup
 
