@@ -45,15 +45,13 @@ Please ensure that you have fulfilled these prerequisites before proceeding with
 4. To deploy Bold BI in a Kubernetes cluster, you can use the following Kustomization.yaml files based on your specific requirement:
 
     - **Azure Kubernetes Service (AKS):**
-        - [Download AKS Kustomization.yaml](https://raw.githubusercontent.com/sivakumar-devops/kustomization-improvement/mohamed/aks/boldbi/kustomization.yaml)
+        - [Download AKS Kustomization.yaml](aks/boldbi/kustomization.yaml)
 
     - **Google Kubernetes Engine (GKE):**
-        - [Download GKE Kustomization.yaml](https://raw.githubusercontent.com/sivakumar-devops/kustomization-improvement/mohamed/gke/boldbi/kustomization.yaml)
+        - [Download GKE Kustomization.yaml](gke/boldbi/kustomization.yaml)
 
     - **Amazon Elastic Kubernetes Service (EKS):**
-        - [Download EKS Kustomization.yaml](https://raw.githubusercontent.com/sivakumar-devops/kustomization-improvement/mohamed/eks/boldbi/kustomization.yaml)
-
-
+        - [Download EKS Kustomization.yaml](eks/boldbi/kustomization.yaml)
 
     Make sure to choose the correct Kustomization.yaml file based on your deployment target.
 
