@@ -77,11 +77,11 @@ Please ensure that you have fulfilled these prerequisites before proceeding with
 
 7. The latest Nginx Ingress controller has a configuration change where the default value for `allow-snippet-annotations` is set to `false`. To fix this, you need to edit the Nginx Ingress ConfigMap file and set the value to `true`.
 
-![Set Snippet value true](images/snippet-true.png)
+    ![Set Snippet value true](images/snippet-true.png)
 
-Use the following command to edit the ConfigMap:
-    
-    kubectl edit cm ingress-nginx-controller -n ingress-nginx
+    Use the following command to edit the ConfigMap:
+        
+        kubectl edit cm ingress-nginx-controller -n ingress-nginx
 
 8. Run the following command to obtain the ingress IP address. Note the ingress EXTERNAL-IP address and map it with your DNS. If you do not have the DNS and want to use the application, then you can use the ingress IP address.
 
