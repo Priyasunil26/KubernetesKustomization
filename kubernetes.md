@@ -108,5 +108,5 @@ Please ensure that you have fulfilled these prerequisites before proceeding with
 
 15. Configure the Bold BI On-Premise application startup to use the application. Please refer the following link for more details on configuring the application startup.
 
-https://help.boldbi.com/embedded-bi/application-startup
+    https://help.boldbi.com/embedded-bi/application-startup
 

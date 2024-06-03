@@ -20,15 +20,16 @@
 
 2. Encode the storage account name and storage key in `base64` format.
 
-For encoding the values to base64 please run the following command in powershell
+    For encoding the values to base64 please run the following command in powershell
 
-```console
-[System.Convert]::ToBase64String([System.Text.Encoding]::UTF8.GetBytes("<plain-text>"))
-```
+    ```console
+    [System.Convert]::ToBase64String([System.Text.Encoding]::UTF8.GetBytes("<plain-text>"))
+    ```
 
-![File Share details](images/aks-file-storage.png)
+    ![File Share details](images/aks-file-storage.png)
 
 ## GKE File Store
+
 - Create a [Google filestore instance](https://console.cloud.google.com/filestore)to store the shared folders for application usage.
 - Note the File share name and IP address after creating filestore instance.
 
