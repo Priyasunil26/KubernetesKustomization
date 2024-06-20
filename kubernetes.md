@@ -140,13 +140,13 @@ helm repo update
 
 4. Viewing Charts in the Bold BI Repository
 
-To view the available charts in the Bold BI repository you've just added, you can use the `helm search repo` command:
+    To view the available charts in the Bold BI repository you've just added, you can use the `helm search repo` command:
 
 ```shell
 helm search repo boldbi
 ```
 
-This command will display a list of available charts in the repository along with their chart version, app version, and a brief description. For example:
+    This command will display a list of available charts in the repository along with their chart version, app version, and a brief description. For example:
 
 ```
 NAME            CHART VERSION   APP VERSION     DESCRIPTION
@@ -180,13 +180,13 @@ boldbi/boldbi   7.9.50          7.9.50          Embed powerful analytics inside 
 
 8. After obtaining the external IP address of the Nginx Ingress controller, map the IP address to a domain name for accessing the application.
 
-9. To deploy Bold BI on Kubernetes, run the appropriate command for your cloud provider. Don't forget to replace the `fileshare name` and `appbase URL` according to your resources.
+9. To deploy Bold BI on Kubernetes, run the appropriate command for your cloud provider. Ensure to update the `fileshare` name and `appBaseUrl` in the configuration to match your specific resources.
 
-| Cloud Provider | Command |
-|----------------|---------|
-| **AKS** | `helm upgrade --install boldbi boldbi/boldbi -f https://raw.githubusercontent.com/boldbi/boldbi-kubernetes/main/helm/custom-values/aks-values.yaml --set appBaseUrl=https://your-app-base-url --set persistentVolume.aks.nfs.fileShareName=your-fileshare-name/nfs --set persistentVolume.aks.nfs.hostName=your-fileshare-hostname` |
-| **GKE** | `helm upgrade --install boldbi boldbi/boldbi -f https://raw.githubusercontent.com/boldbi/boldbi-kubernetes/main/helm/custom-values/gke-values.yaml --set appBaseUrl=https://your-app-base-url --set persistentVolume.gke.nfs.fileShareName=your-fileshare-name --set persistentVolume.gke.nfs.hostName=your-fileshare-hostname` |
-| **EKS** | `helm upgrade --install boldbi boldbi/boldbi -f https://raw.githubusercontent.com/boldbi/boldbi-kubernetes/main/helm/custom-values/eks-values.yaml --set appBaseUrl=https://your-app-base-url --set persistentVolume.eks.efs.fileSystemId=your-efs-file-system-id` |
+    | Cloud Provider | Command |
+    |----------------|---------|
+    | **AKS** | `helm upgrade --install boldbi boldbi/boldbi -f https://raw.githubusercontent.com/boldbi/boldbi-kubernetes/main/helm/custom-values/aks-values.yaml --set appBaseUrl=https://your-app-base-url --set persistentVolume.aks.nfs.fileShareName=your-fileshare-name/nfs --set persistentVolume.aks.nfs.hostName=your-fileshare-hostname` |
+    | **GKE** | `helm upgrade --install boldbi boldbi/boldbi -f https://raw.githubusercontent.com/boldbi/boldbi-kubernetes/main/helm/custom-values/gke-values.yaml --set appBaseUrl=https://your-app-base-url --set persistentVolume.gke.nfs.fileShareName=your-fileshare-name --set persistentVolume.gke.nfs.hostName=your-fileshare-hostname` |
+    | **EKS** | `helm upgrade --install boldbi boldbi/boldbi -f https://raw.githubusercontent.com/boldbi/boldbi-kubernetes/main/helm/custom-values/eks-values.yaml --set appBaseUrl=https://your-app-base-url --set persistentVolume.eks.efs.fileSystemId=your-efs-file-system-id` |
 
 Replace the placeholders:
 - `https://your-app-base-url` with your actual application base URL.
@@ -201,13 +201,13 @@ helm upgrade --install boldbi boldbi/boldbi -f https://raw.githubusercontent.com
 
 10. If you want to download the YAML files and edit them, please download the YAML from the links below and update the YAML file according to your needs.
 
-| Cloud Provider | Link |
-|----------------|------|
-| AKS | [click here to download](https://raw.githubusercontent.com/boldbi/boldbi-kubernetes/main/helm/custom-values/aks-values.yaml) |
-| GKE | [click here to download](https://raw.githubusercontent.com/boldbi/boldbi-kubernetes/main/helm/custom-values/gke-values.yaml) |
-| EKS | [click here to download](https://raw.githubusercontent.com/boldbi/boldbi-kubernetes/main/helm/custom-values/eks-values.yaml) |
+    | Cloud Provider | Link |
+    |----------------|------|
+    | AKS | [click here to download](https://raw.githubusercontent.com/boldbi/boldbi-kubernetes/main/helm/custom-values/aks-values.yaml) |
+    | GKE | [click here to download](https://raw.githubusercontent.com/boldbi/boldbi-kubernetes/main/helm/custom-values/gke-values.yaml) |
+    | EKS | [click here to download](https://raw.githubusercontent.com/boldbi/boldbi-kubernetes/main/helm/custom-values/eks-values.yaml) |
 
-Make the necessary changes and save the updated YAML files for deployment. Run the following command to deploy Bold BI in your cluster:
+    Make the necessary changes and save the updated YAML files for deployment. Run the following command to deploy Bold BI in your cluster:
 ```bash
 helm upgrade --install [RELEASE_NAME] boldbi/boldbi -f [Crafted values.yaml file]
 ```
@@ -222,7 +222,7 @@ helm upgrade boldbi boldbi/boldbi -f my-values.yaml
     ```bash 
     kubectl get pods -n bold-services
 
-13. Wait until you see the applications running. Then, use the DNS or ingress IP address you obtained from Step 8 to access the application in the browser.
+13. Wait until you see the applications running. Then, use the `appBaseUrl` to access the application in the browser.
 
 14. Configure the Bold BI On-Premise application startup to use the application. Please refer the following link for more details on configuring the application startup.
 
