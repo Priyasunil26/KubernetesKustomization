@@ -1,9 +1,9 @@
 # Deploy Bold BI on Kubernetes
 This section provides instructions on how to deploy Bold BI in different cloud cluster. Please follow the documentation below to successfully deploy the application.
 
-* [Installation using kustomization with kubectl]
+* [Installation using kustomization with kubectl](#deployment-using-kustomization-with-kubectl)
     
-* [Installation using helm]
+* [Installation using helm](#deployment-using-helm)
 
 ## Prerequisites
 
