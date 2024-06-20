@@ -140,7 +140,7 @@ helm repo update
 
 4. Viewing Charts in the Bold BI Repository
 
-    To view the available charts in the Bold BI repository you've just added, you can use the `helm search repo` command:
+    To view the available charts in the Bold BI repository, you can use the `helm search repo` command:
 
 ```shell
 helm search repo boldbi
@@ -171,7 +171,7 @@ boldbi/boldbi   7.9.50          7.9.50          Embed powerful analytics inside 
         
         kubectl edit cm ingress-nginx-controller -n ingress-nginx
 
-7. Run the following command to obtain the ingress IP address. Note the ingress EXTERNAL-IP address and map it with your DNS. If you do not have the DNS and want to use the application, then you can use the ingress IP address.
+7. Run the following command to obtain the ingress IP address.
 
     ```bash 
     kubectl get service/ingress-nginx-controller -n ingress-nginx
