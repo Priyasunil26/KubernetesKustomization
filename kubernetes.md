@@ -146,8 +146,6 @@ helm repo update
 helm search repo boldbi
 ```
 
-    This command will display a list of available charts in the repository along with their chart version, app version, and a brief description. For example:
-
 ```
 NAME            CHART VERSION   APP VERSION     DESCRIPTION
 boldbi/boldbi   7.9.50          7.9.50          Embed powerful analytics inside your apps and t...
@@ -188,13 +186,13 @@ boldbi/boldbi   7.9.50          7.9.50          Embed powerful analytics inside 
     | **GKE** | `helm upgrade --install boldbi boldbi/boldbi -f https://raw.githubusercontent.com/boldbi/boldbi-kubernetes/main/helm/custom-values/gke-values.yaml --set appBaseUrl=https://your-app-base-url --set persistentVolume.gke.nfs.fileShareName=your-fileshare-name --set persistentVolume.gke.nfs.hostName=your-fileshare-hostname` |
     | **EKS** | `helm upgrade --install boldbi boldbi/boldbi -f https://raw.githubusercontent.com/boldbi/boldbi-kubernetes/main/helm/custom-values/eks-values.yaml --set appBaseUrl=https://your-app-base-url --set persistentVolume.eks.efs.fileSystemId=your-efs-file-system-id` |
 
-Replace the placeholders:
-- `https://your-app-base-url` with your actual application base URL.
-- `your-fileshare-name` with the name of your file share.
-- `your-fileshare-hostname` with the hostname of your file share.
-- `your-efs-file-system-id` with your EFS file system ID (for EKS).
+    Replace the placeholders:
+    - `https://your-app-base-url` with your actual application base URL.
+    - `your-fileshare-name` with the name of your file share.
+    - `your-fileshare-hostname` with the hostname of your file share.
+    - `your-efs-file-system-id` with your EFS file system ID (for EKS).
 
-**For example:**
+    **For example:**
 ```sh
 helm upgrade --install boldbi boldbi/boldbi -f https://raw.githubusercontent.com/boldbi/boldbi-kubernetes/main/helm/custom-values/aks-values.yaml --set appBaseUrl=https://optionallib-check.boldbi.demo.com --set persistentVolume.aks.nfs.fileShareName=aksstorage1026/nfs --set persistentVolume.aks.nfs.hostName=aksstorage1026.file.core.windows.net
 ```
