@@ -207,28 +207,15 @@ To integrate the Bold BI Helm repository into your Helm setup, follow these step
 
 To deploy Bold BI on Kubernetes, execute the appropriate command for your cloud provider. Ensure to replace placeholders such as `appBaseUrl` and `persistentVolume` details specific to your cloud provider resources.
 
-| Cloud Provider | Command |
-|----------------|---------|
-| **AKS** | ```shell
+ **AKS** : 
+ 
+ ```shell
   helm upgrade --install boldbi boldbi/boldbi \
     -f https://raw.githubusercontent.com/boldbi/boldbi-kubernetes/main/helm/custom-values/aks-values.yaml \
     --set appBaseUrl=https://your-app-base-url \
     --set persistentVolume.aks.nfs.fileShareName=your-fileshare-name/nfs \
     --set persistentVolume.aks.nfs.hostName=your-fileshare-hostname
-  ``` |
-| **GKE** | ```shell
-  helm upgrade --install boldbi boldbi/boldbi \
-    -f https://raw.githubusercontent.com/boldbi/boldbi-kubernetes/main/helm/custom-values/gke-values.yaml \
-    --set appBaseUrl=https://your-app-base-url \
-    --set persistentVolume.gke.nfs.fileShareName=your-fileshare-name \
-    --set persistentVolume.gke.nfs.hostName=your-fileshare-hostname
-  ``` |
-| **EKS** | ```shell
-  helm upgrade --install boldbi boldbi/boldbi \
-    -f https://raw.githubusercontent.com/boldbi/boldbi-kubernetes/main/helm/custom-values/eks-values.yaml \
-    --set appBaseUrl=https://your-app-base-url \
-    --set persistentVolume.eks.efs.fileSystemId=your-efs-file-system-id
-  ``` |
+  ``` 
 
 Replace the placeholders:
 - `https://your-app-base-url` with your actual application base URL.
