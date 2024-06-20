@@ -205,7 +205,7 @@ To integrate the Bold BI Helm repository into your Helm setup, follow these step
 
 ### 4. Install Bold BI using helm
 
-To deploy Bold BI on Kubernetes, execute the appropriate command for your cloud provider. Ensure to replace placeholders such as `appBaseUrl` and `persistentVolume` details specific to your cloud provider resources.
+* To deploy Bold BI on Kubernetes, execute the appropriate command for your cloud provider. Ensure to replace placeholders such as `appBaseUrl` and `persistentVolume` details specific to your cloud provider resources.
 
  **AKS** : 
  
@@ -231,6 +231,11 @@ helm upgrade --install boldbi boldbi/boldbi \
   --set persistentVolume.aks.nfs.fileShareName=aksstorage1026/nfs \
   --set persistentVolume.aks.nfs.hostName=aksstorage1026.file.core.windows.net
 ```
+* If you are configuring the site with HTTPS protocol, please create a secret with SSL cert and keys using the below command.
+
+    ```sh
+    kubectl create secret tls bold-tls -n bold-services --key <key-path> --cert <certificate-path>
+    ```
 
 ### 5. Access the application and Application Startup
 
