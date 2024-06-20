@@ -80,8 +80,9 @@ After creating the respective cloud provider storage, note the following details
     | Nginx             | `kubectl apply -f ingress.yaml`    |
     | Istio             | `kubectl apply -f gateway.yaml`    |
 
-### 4.Download Kustomization and configure customization for Bold BI installation
-* To deploy Bold BI in a Kubernetes cluster, you can use the following Kustomization.yaml files based on your specific requirement:
+### 4. Download Kustomization and Configure Customization for Bold BI Installation
+
+* To deploy Bold BI in a Kubernetes cluster, use the appropriate `kustomization.yaml` file based on your specific requirement:
 
     - **Azure Kubernetes Service (AKS):**
         - [Download AKS Kustomization.yaml](aks/boldbi/kustomization.yaml)
@@ -92,152 +93,168 @@ After creating the respective cloud provider storage, note the following details
     - **Amazon Elastic Kubernetes Service (EKS):**
         - [Download EKS Kustomization.yaml](eks/boldbi/kustomization.yaml)
 
-    Make sure to choose the correct Kustomization.yaml file based on your deployment target.
-* Update the external IP address or domain name obtained from in step 3 in kustomization yaml.
+    Make sure to choose the correct `kustomization.yaml` file based on your deployment target.
+
+* Update the external IP address or domain name obtained in step 3 in the `kustomization.yaml` file.
+
     ![App-Base-URL](images/app-base-url.png) 
 
-* Update the presistent volume details you obtiained from step2 based on the cloud provider.
+* Update the persistent volume details you obtained from step 2 based on the cloud provider.
 
-    |File Storage                  | Action |
-    -------------------------------|-------------------------------|
-    | Azure File Share             | Replace the `storage account name and file share name` with `<storage_account_name>` and `<file_share_name>`, respectively, in the file.                                ![After Replacing File Storage name](images/After-replace-fileshare.png)                               |
-    | GKE File Store               | Replace the `File share name and IP address` with `<file_share_name>` and `<file_share_ip_address>`, in the file.                                                 ![Replace file store name](images/replace-filestore.png)                                              |
-    | Elastic File Storage for EKS | Replace the `File system ID` with `<efs_file_system_id>` in the file.                                                                                                          ![replace-fs-id](images/replace-fs-id.png)                                                                |
+    | File Storage                  | Action                                                                                                      |
+    |-------------------------------|-------------------------------------------------------------------------------------------------------------|
+    | Azure File Share              | Replace the `storage account name` and `file share name` with `<storage_account_name>` and `<file_share_name>`, respectively, in the file. ![After Replacing File Storage name](images/After-replace-fileshare.png) |
+    | GKE File Store                | Replace the `file share name` and `IP address` with `<file_share_name>` and `<file_share_ip_address>` in the file. ![Replace file store name](images/replace-filestore.png)                |
+    | Elastic File Storage for EKS  | Replace the `file system ID` with `<efs_file_system_id>` in the file. ![replace-fs-id](images/replace-fs-id.png) |
+
+Ensure that all the required details are accurately updated in the `kustomization.yaml` file before proceeding with the deployment.
+
     
-### Bold Bi installation and application startup.
+### 5. Bold BI Installation and Application Startup
 
-  
-* Run the following command to deploy Bold BI application on cluster from the kustomization.yaml file location.
+* Run the following command to deploy the Bold BI application on your cluster from the `kustomization.yaml` file location:
+
     ```bash
     kubectl apply -k .
+    ```
 
-* Use the following command to get the pods status and wait undtil the poda get running.
+* Use the following command to get the status of the pods and wait until the pods are in the running state:
+
     ```bash 
     kubectl get pods -n bold-services
+    ```
 
-* after the pods successfully move to running state  
+* After the pods successfully transition to the running state, you can access the application using the IP address. If you configured the application using a DNS, you can access it using the DNS.
 
-15. Configure the Bold BI On-Premise application startup to use the application. Please refer the following link for more details on configuring the application startup.
+* Configure the Bold BI On-Premise application startup to use the application. Please refer to the following link for more details on configuring the application startup:
 
-    https://help.boldbi.com/embedded-bi/application-startup
+    [Bold BI Application Startup](https://help.boldbi.com/embedded-bi/application-startup)
 
 
 ## Deployment using Helm
 
-1. Create and connect to a Kubernetes cluster to deploy Bold BI. Please refer to the table below for creating and connecting to Kubernetes clusters on different cloud providers and on-premise.
+### 1. Create and Connect to a Kubernetes Cluster
 
-    | Cloud Providers            | Cluster Creation                                                                                    | Cluster Connection                                                                                      |
-    |----------------------------|----------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------|
-    | Azure Kubernetes Service   | [Azure AKS Walkthrough](https://docs.microsoft.com/en-us/azure/aks/kubernetes-walkthrough-portal) | [AKS Cluster Connection](https://docs.microsoft.com/en-us/azure/aks/kubernetes-walkthrough-portal#connect-to-the-cluster) |
-    | Google Kubernetes Engine   | [Google GKE Console](https://cloud.google.com/kubernetes-engine/docs/concepts/kubernetes-engine-overview)                                | [GKE Cluster Connection](https://cloud.google.com/kubernetes-engine/docs/quickstart)                     |
-    | Elastic Kubernetes Service | [AWS EKS Guide](https://docs.aws.amazon.com/eks/latest/userguide/create-cluster.html)             | [EKS Cluster Connection](https://aws.amazon.com/premiumsupport/knowledge-center/eks-cluster-connection/) |
+Before deploying Bold BI, you need to create and connect to a Kubernetes cluster. Refer to the table below for instructions based on your chosen cloud provider or on-premise setup:
 
-2. Create a File share instance in your storage account and note the File share name to store the shared folders for application usage.
+| Cloud Providers            | Cluster Creation                                                                                      | Cluster Connection                                                                                           |
+|----------------------------|-------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------|
+| Azure Kubernetes Service   | [Azure AKS Walkthrough](https://docs.microsoft.com/en-us/azure/aks/kubernetes-walkthrough-portal)      | [AKS Cluster Connection](https://docs.microsoft.com/en-us/azure/aks/kubernetes-walkthrough-portal#connect-to-the-cluster) |
+| Google Kubernetes Engine   | [Google GKE Console](https://cloud.google.com/kubernetes-engine/docs/concepts/kubernetes-engine-overview) | [GKE Cluster Connection](https://cloud.google.com/kubernetes-engine/docs/quickstart)                         |
+| Elastic Kubernetes Service | [AWS EKS Guide](https://docs.aws.amazon.com/eks/latest/userguide/create-cluster.html)                  | [EKS Cluster Connection](https://aws.amazon.com/premiumsupport/knowledge-center/eks-cluster-connection/)     |
 
-    | **Cloud Provider** | **Link** |
-    |--------------------|----------|
-    |  AKS File Storage | [Create an NFS file share instance](https://learn.microsoft.com/en-us/azure/storage/files/storage-how-to-use-files-portal?tabs=azure-portal) |
-    |  EKS File System   | [Create an Amazon Elastic File System](https://docs.aws.amazon.com/efs/latest/ug/gs-step-two-create-efs-resources.html) |
-    |  GKE File Store   | [Create a Google filestore instance](https://cloud.google.com/filestore/docs/creating-instances) |
+Ensure you have a Kubernetes cluster ready and connected before proceeding with the installation steps.
 
-    Please ensure that you follow the provided links to set up the necessary file storage for your Kubernetes clusters.
-    
-3. Adding the Bold BI Helm Repository
 
-    To add the Bold BI Helm repository to your Helm setup, you need to run the following command:
+### 2. Setup Persistent Volume
 
-```shell
-helm repo add boldbi https://boldbi.github.io/boldbi-kubernetes
-```
+Since Bold BI is a stateful application, a persistent volume is required to store the application data. We recommend using external file systems such as Azure File Share, Amazon EFS, or Google Filestore to ensure that the application data is not tied to the cluster. This setup also ensures seamless backup of application data and supports the ReadWriteMany access mode, which is essential for Bold BI's multi-node scaling capabilities. Please follow the documentation links below to set up persistent volume storage:
 
-```shell
-helm repo update
-```
+| **Cloud Provider** | **Link** |
+|--------------------|----------|
+| AKS File Storage   | [Create an NFS file share instance](https://learn.microsoft.com/en-us/azure/storage/files/storage-how-to-use-files-portal?tabs=azure-portal) |
+| EKS File System    | [Create an Amazon Elastic File System](https://docs.aws.amazon.com/efs/latest/ug/gs-step-two-create-efs-resources.html) |
+| GKE File Store     | [Create a Google Filestore instance](https://cloud.google.com/filestore/docs/creating-instances) |
 
-4. Viewing Charts in the Bold BI Repository
+Please ensure that you follow the provided links to set up the necessary file storage for your Kubernetes clusters.
 
-    To view the available charts in the Bold BI repository you've just added, you can use the `helm search repo` command:
+After creating the respective cloud provider storage, note the following details according to the provider:
 
-```shell
-helm search repo boldbi
-```
+| **Cloud Provider** | **Required Details** |
+|--------------------|----------------------|
+| AKS File Storage   | Storage account name <br> File share name |
+| EKS File System    | EFS filesystem ID    |
+| GKE File Store     | Filestore name <br> Filestore IP address |
 
-```
-NAME            CHART VERSION   APP VERSION     DESCRIPTION
-boldbi/boldbi   7.9.50          7.9.50          Embed powerful analytics inside your apps and t...
-```
+### 3. Setup Load Balancer
 
-   
-5. After connecting with your cluster, deploy the `latest Nginx ingress controller` to your cluster using the following command.
+* Bold BI supports Nginx and Istio as load balancers. Please install the Nginx Ingress Controller or Istio Gateway in your cluster by following the links below. If you already have either of them installed, you can skip this step.
 
-    | Cloud Provider                  | Installation Command                                                                                       |
-    |---------------------------------|--------------------------------------------------------------------------------------------------------|
-    | Azure Kubernetes Service (AKS)  | kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.10.0/deploy/static/provider/cloud/deploy.yaml |
-    | Google Kubernetes Engine (GKE)  | kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.10.0/deploy/static/provider/cloud/deploy.yaml                                         |
-    | Elastic Kubernetes Service (EKS)| kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.10.0/deploy/static/provider/aws/deploy.yaml  |
-   
- 
-    For more information about the load balancer installation, please refer to this [link](https://kubernetes.github.io/ingress-nginx/deploy/). Deploy Nginx according to your target cloud provider (AKS, GKE, EKS) by choosing the appropriate configuration.
+    | **Cloud Provider**                | **Nginx Ingress Controller**                                                               | **Istio Gateway**                                                                                          |
+    |-----------------------------------|-------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------|
+    | Azure Kubernetes Service (AKS)    | [Nginx for AKS](https://kubernetes.github.io/ingress-nginx/deploy/#azure)                  | [Istio for AKS](https://docs.microsoft.com/en-us/azure/aks/servicemesh-istio-install)                      |
+    | Google Kubernetes Engine (GKE)    | [Nginx for GKE](https://kubernetes.github.io/ingress-nginx/deploy/#gce-gke)                | [Istio for GKE](https://cloud.google.com/istio/docs/istio-on-gke/installing)                               |
+    | Elastic Kubernetes Service (EKS)  | [Nginx for EKS](https://kubernetes.github.io/ingress-nginx/deploy/#aws)                    | [Istio for EKS](https://aws.amazon.com/blogs/opensource/getting-started-istio-eks/)                        |
 
-6. The latest Nginx Ingress controller has a configuration change where the default value for `allow-snippet-annotations` is set to `false`. To fix this, you need to edit the Nginx Ingress ConfigMap file and set the value to `true`.
+* After installing the load balancer, note the external IP address and map the IP address with the domain. Use the commands below to obtain the external IP of the Nginx Load Balancer and Istio Gateway.
 
-    ![Set Snippet value true](images/snippet-true.png)
+    | **Load Balancer** | **Command to Obtain External IP** |
+    |-------------------|-----------------------------------|
+    | Nginx             | `kubectl get svc -n ingress-nginx ingress-nginx-controller -o jsonpath='{.status.loadBalancer.ingress[0].ip}'` |
+    | Istio             | `kubectl get svc -n istio-system istio-ingressgateway -o jsonpath='{.status.loadBalancer.ingress[0].ip}'`     |
 
-    Use the following command to edit the ConfigMap:
-        
-        kubectl edit cm ingress-nginx-controller -n ingress-nginx
+### 4. Adding the Bold BI Helm Repository
 
-7. Run the following command to obtain the ingress IP address. Note the ingress EXTERNAL-IP address and map it with your DNS. If you do not have the DNS and want to use the application, then you can use the ingress IP address.
+To integrate the Bold BI Helm repository into your Helm setup, follow these steps:
 
-    ```bash 
-    kubectl get service/ingress-nginx-controller -n ingress-nginx
+1. Run the command below to add the Bold BI Helm repository:
 
-8. After obtaining the external IP address of the Nginx Ingress controller, map the IP address to a domain name for accessing the application.
+    ```shell
+    helm repo add boldbi https://boldbi.github.io/boldbi-kubernetes
+    ```
 
-9. To deploy Bold BI on Kubernetes, run the appropriate command for your cloud provider. Ensure to update the `fileshare` name and `appBaseUrl` in the configuration to match your specific resources.
+    This command adds `boldbi` as the name for the repository with the URL `https://boldbi.github.io/boldbi-kubernetes`.
 
-    | Cloud Provider | Command |
-    |----------------|---------|
-    | **AKS** | `helm upgrade --install boldbi boldbi/boldbi -f https://raw.githubusercontent.com/boldbi/boldbi-kubernetes/main/helm/custom-values/aks-values.yaml --set appBaseUrl=https://your-app-base-url --set persistentVolume.aks.nfs.fileShareName=your-fileshare-name/nfs --set persistentVolume.aks.nfs.hostName=your-fileshare-hostname` |
-    | **GKE** | `helm upgrade --install boldbi boldbi/boldbi -f https://raw.githubusercontent.com/boldbi/boldbi-kubernetes/main/helm/custom-values/gke-values.yaml --set appBaseUrl=https://your-app-base-url --set persistentVolume.gke.nfs.fileShareName=your-fileshare-name --set persistentVolume.gke.nfs.hostName=your-fileshare-hostname` |
-    | **EKS** | `helm upgrade --install boldbi boldbi/boldbi -f https://raw.githubusercontent.com/boldbi/boldbi-kubernetes/main/helm/custom-values/eks-values.yaml --set appBaseUrl=https://your-app-base-url --set persistentVolume.eks.efs.fileSystemId=your-efs-file-system-id` |
+2. Once added, you can proceed to update your Helm repositories:
 
-    Replace the placeholders:
-    - `https://your-app-base-url` with your actual application base URL.
-    - `your-fileshare-name` with the name of your file share.
-    - `your-fileshare-hostname` with the hostname of your file share.
-    - `your-efs-file-system-id` with your EFS file system ID (for EKS).
+    ```shell
+    helm repo update
+    ```
 
-    **For example:**
-```sh
-helm upgrade --install boldbi boldbi/boldbi -f https://raw.githubusercontent.com/boldbi/boldbi-kubernetes/main/helm/custom-values/aks-values.yaml --set appBaseUrl=https://optionallib-check.boldbi.demo.com --set persistentVolume.aks.nfs.fileShareName=aksstorage1026/nfs --set persistentVolume.aks.nfs.hostName=aksstorage1026.file.core.windows.net
-```
+    Updating ensures you have the latest information about available charts from the newly added repository.
 
-10. If you want to download the YAML files and edit them, please download the YAML from the links below and update the YAML file according to your needs.
+### 4. Install Bold BI using helm
 
-    | Cloud Provider | Link |
-    |----------------|------|
-    | AKS | [click here to download](https://raw.githubusercontent.com/boldbi/boldbi-kubernetes/main/helm/custom-values/aks-values.yaml) |
-    | GKE | [click here to download](https://raw.githubusercontent.com/boldbi/boldbi-kubernetes/main/helm/custom-values/gke-values.yaml) |
-    | EKS | [click here to download](https://raw.githubusercontent.com/boldbi/boldbi-kubernetes/main/helm/custom-values/eks-values.yaml) |
+To deploy Bold BI on Kubernetes, execute the appropriate command for your cloud provider. Ensure to replace placeholders such as `appBaseUrl` and `persistentVolume` details specific to your cloud provider resources.
 
-    Make the necessary changes and save the updated YAML files for deployment. Run the following command to deploy Bold BI in your cluster:
-```bash
-helm upgrade --install [RELEASE_NAME] boldbi/boldbi -f [Crafted values.yaml file]
-```
+| Cloud Provider | Command |
+|----------------|---------|
+| **AKS** | ```shell
+  helm upgrade --install boldbi boldbi/boldbi \
+    -f https://raw.githubusercontent.com/boldbi/boldbi-kubernetes/main/helm/custom-values/aks-values.yaml \
+    --set appBaseUrl=https://your-app-base-url \
+    --set persistentVolume.aks.nfs.fileShareName=your-fileshare-name/nfs \
+    --set persistentVolume.aks.nfs.hostName=your-fileshare-hostname
+  ``` |
+| **GKE** | ```shell
+  helm upgrade --install boldbi boldbi/boldbi \
+    -f https://raw.githubusercontent.com/boldbi/boldbi-kubernetes/main/helm/custom-values/gke-values.yaml \
+    --set appBaseUrl=https://your-app-base-url \
+    --set persistentVolume.gke.nfs.fileShareName=your-fileshare-name \
+    --set persistentVolume.gke.nfs.hostName=your-fileshare-hostname
+  ``` |
+| **EKS** | ```shell
+  helm upgrade --install boldbi boldbi/boldbi \
+    -f https://raw.githubusercontent.com/boldbi/boldbi-kubernetes/main/helm/custom-values/eks-values.yaml \
+    --set appBaseUrl=https://your-app-base-url \
+    --set persistentVolume.eks.efs.fileSystemId=your-efs-file-system-id
+  ``` |
+
+Replace the placeholders:
+- `https://your-app-base-url` with your actual application base URL.
+- `your-fileshare-name` with the name of your file share.
+- `your-fileshare-hostname` with the hostname of your file share.
+- `your-efs-file-system-id` with your EFS file system ID (for EKS).
+
 **For example:**
-
-```sh 
-helm upgrade boldbi boldbi/boldbi -f my-values.yaml
+```shell
+helm upgrade --install boldbi boldbi/boldbi \
+  -f https://raw.githubusercontent.com/boldbi/boldbi-kubernetes/main/helm/custom-values/aks-values.yaml \
+  --set appBaseUrl=https://optionallib-check.boldbi.demo.com \
+  --set persistentVolume.aks.nfs.fileShareName=aksstorage1026/nfs \
+  --set persistentVolume.aks.nfs.hostName=aksstorage1026.file.core.windows.net
 ```
-11. Please wait for some time until the Bold BI  application is deployed to your cluster.
 
-12. Use the following command to get the pods status.
+### 5. Access the application and Application Startup
+
+* Use the following command to get the status of the pods and wait until the pods are in the running state:
+
     ```bash 
     kubectl get pods -n bold-services
+    ```
 
-13. Wait until you see the applications running. Then, use the `appBaseUrl` to access the application in the browser.
+* After the pods successfully transition to the running state, you can access using a DNS, you can access it using the DNS.
 
-14. Configure the Bold BI On-Premise application startup to use the application. Please refer the following link for more details on configuring the application startup.
+* Configure the Bold BI On-Premise application startup to use the application. Please refer to the following link for more details on configuring the application startup:
 
-    [Bold BI Application Startup Configuration](https://help.boldbi.com/embedded-bi/application-startup)
+    [Bold BI Application Startup](https://help.boldbi.com/embedded-bi/application-startup)
