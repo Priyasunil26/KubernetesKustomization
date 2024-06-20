@@ -128,7 +128,7 @@ Please ensure that you have fulfilled these prerequisites before proceeding with
     
 3. Adding the Bold BI Helm Repository
 
-To add the Bold BI Helm repository to your Helm setup, you need to run the following command:
+    To add the Bold BI Helm repository to your Helm setup, you need to run the following command:
 
 ```shell
 helm repo add boldbi https://boldbi.github.io/boldbi-kubernetes
