@@ -62,7 +62,7 @@ After creating the respective cloud provider storage, note the following details
 | EKS File System    | EFS filesystem ID    |
 | GKE File Store     | Filestore name <br> Filestore IP address |
 
-For addtinal information about the above required details please refer to the [link](pr) 
+For additional information about the above required details, please refer to the [link](PersistentVolumeCreation.md).
 
 ### 3. Setup Load Balancer
 
