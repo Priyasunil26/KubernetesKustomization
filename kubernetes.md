@@ -81,7 +81,7 @@ For additional information about the above required details, please refer to the
     | Nginx             | `kubectl get svc -n ingress-nginx ingress-nginx-controller -o jsonpath='{.status.loadBalancer.ingress[0].ip}'` |
     | Istio             | `kubectl get svc -n istio-system istio-ingressgateway -o jsonpath='{.status.loadBalancer.ingress[0].ip}'`     |
 
-* You can simply apply the following files to configure access to the application via IP address. For accessing the application via HTTP or HTTPS, please refer to the `[SSL configuration](SSL-Termination.md)` documentation.
+* You can simply apply the following files to configure access to the application via IP address. For accessing the application via HTTP or HTTPS, please refer to the `[SSL configuration](SSL_Configuration.md)` documentation.
 
     | **Load Balancer** | **Command to Apply Configuration** |
     |-------------------|----------------------------------|
