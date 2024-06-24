@@ -1,6 +1,6 @@
 # Deploy Bold BI on Kubernetes
 
-This section provides instructions on how to deploy Bold BI on different cloud clusters. Follow the methods below to successfully deploy the application.
+This section provides instructions on how to deploy [Bold BI](https://www.boldbi.com/) on different cloud clusters. Follow the methods below to successfully deploy the Bold BI application.
 
 ## Installation Methods
 
@@ -11,13 +11,19 @@ You can deploy Bold BI on your Kubernetes cluster using either Kustomize or Helm
 
 ## Prerequisites
 
-- **[Install Helm](https://helm.sh/docs/intro/install/)**: If you prefer to use Helm to install Bold BI, make sure to install Helm.
-- **[Install kubectl](https://kubernetes.io/docs/tasks/tools/#kubectl)**: Ensure that you install kubectl on your local machine to facilitate the deployment process.
-- **Kubernetes Cluster**: Create a cluster in which you want to deploy the Bold BI Application. You can use services like [AKS](https://docs.microsoft.com/en-us/azure/aks/kubernetes-walkthrough-portal), [AWS EKS](https://docs.aws.amazon.com/eks/latest/userguide/getting-started.html), or [GKE](https://cloud.google.com/kubernetes-engine/docs/quickstart).
-- **[Persistent Volume](PersistentVolumeCreation.md)**: Set up the necessary file storage for your Kubernetes clusters.
-- **Load Balancer**: To configure Bold BI with Ingress, you need to install the [Nginx Ingress controller](https://kubernetes.github.io/ingress-nginx/deploy/) in your cluster.
-- **Database**: Create a database to store metadata and intermediate data details of the Bold BI site.
-- **Web Browsers**: The supported web browsers include Microsoft Edge, Mozilla Firefox, and Google Chrome.
+1. **[Install Helm](https://helm.sh/docs/intro/install/)**: If you prefer to use Helm to install Bold BI, make sure to install Helm.
+
+2. **[Install kubectl](https://kubernetes.io/docs/tasks/tools/#kubectl)**: Ensure that you install kubectl on your local machine to facilitate the deployment process.
+
+3. **Kubernetes Cluster**: Create a cluster in which you want to deploy the Bold BI application. You can use services like [AKS](https://docs.microsoft.com/en-us/azure/aks/kubernetes-walkthrough-portal), [AWS EKS](https://docs.aws.amazon.com/eks/latest/userguide/getting-started.html), or [GKE](https://cloud.google.com/kubernetes-engine/docs/quickstart).
+
+4. **[Persistent Volume](PersistentVolumeCreation.md)**: Set up the necessary file storage for your Bold BI application to be deployed in a Kubernetes cluster.
+
+5. **Load Balancer**: To host Bold BI with a load balancer, install the [Nginx Ingress controller](https://kubernetes.github.io/ingress-nginx/deploy/) or [Istio](https://istio.io/latest/docs/setup/install/) in your Kubernetes cluster. This setup is required to manage external access to your Bold BI application through HTTP and HTTPS routes.
+
+6. **Database**: Create a database to store metadata and intermediate data details of the Bold BI site.
+
+7. **Web Browsers**: The supported web browsers include Microsoft Edge, Mozilla Firefox, and Google Chrome.
 
 Please ensure that you have fulfilled these prerequisites before proceeding with the deployment.
 
@@ -25,7 +31,7 @@ Please ensure that you have fulfilled these prerequisites before proceeding with
 
 ### 1. Create and Connect to a Kubernetes Cluster
 
-Before deploying Bold BI, you need to create and connect to a Kubernetes cluster. Refer to the table below for instructions based on your chosen cloud provider or on-premise setup:
+Before deploying Bold BI, you need to create and connect to a Kubernetes cluster. Please refer to the table below for instructions tailored to your selected cloud provider's cluster setup.
 
 | Cloud Providers            | Cluster Creation                                                                                      | Cluster Connection                                                                                           |
 |----------------------------|-------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------|
@@ -38,7 +44,7 @@ Ensure you have a Kubernetes cluster ready and connected before proceeding with 
 
 ### 2. Setup Persistent Volume
 
-Since Bold BI is a stateful application, a persistent volume is required to store the application data. We recommend using external file systems such as Azure File Share, Amazon EFS, or Google Filestore to ensure that the application data is not tied to the cluster. This setup also ensures seamless backup of application data and supports the ReadWriteMany access mode, which is essential for Bold BI's multi-node scaling capabilities. Please follow the documentation links below to set up persistent volume storage:
+Since Bold BI is a stateful application, a persistent volume is required to store the application data. We recommend using external file systems such as `Azure File Share`, `Amazon EFS`, or `Google Filestore` to ensure that the application data is not tied to the cluster. This setup also ensures seamless backup of application data and supports the ReadWriteMany access mode, which is essential for Bold BI's multi-node scaling capabilities. Please follow the documentation links below to set up persistent volume storage:
 
 | **Cloud Provider** | **Link** |
 |--------------------|----------|
@@ -52,9 +58,11 @@ After creating the respective cloud provider storage, note the following details
 
 | **Cloud Provider** | **Required Details** |
 |--------------------|----------------------|
-| AKS File Storage   | Storage account name <br> File share name |
+| AKS File Storage   | Storage account name <br> NFS File share name |
 | EKS File System    | EFS filesystem ID    |
 | GKE File Store     | Filestore name <br> Filestore IP address |
+
+For addtinal information about the above required details please refer to the [link](pr) 
 
 ### 3. Setup Load Balancer
 
@@ -73,12 +81,12 @@ After creating the respective cloud provider storage, note the following details
     | Nginx             | `kubectl get svc -n ingress-nginx ingress-nginx-controller -o jsonpath='{.status.loadBalancer.ingress[0].ip}'` |
     | Istio             | `kubectl get svc -n istio-system istio-ingressgateway -o jsonpath='{.status.loadBalancer.ingress[0].ip}'`     |
 
-* Apply the Nginx Ingress or Istio Gateway configuration in your cluster.
+* You can simply apply the following files to configure access to the application via IP address. For accessing the application via HTTP or HTTPS, please refer to the `[SSL configuration](SSL-Termination.md)` documentation.
 
     | **Load Balancer** | **Command to Apply Configuration** |
-    |-------------------|------------------------------------|
-    | Nginx             | `kubectl apply -f ingress.yaml`    |
-    | Istio             | `kubectl apply -f gateway.yaml`    |
+    |-------------------|----------------------------------|
+    | Nginx             | `kubectl apply -f ingress.yaml`   |
+    | Istio             | `kubectl apply -f gateway.yaml`   |
 
 ### 4. Download Kustomization and Configure Customization for Bold BI Installation
 
