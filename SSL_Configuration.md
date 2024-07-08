@@ -1,4 +1,4 @@
-# Configuring SSL in a Kubernetes Deployment Using `kubectl`
+# Configuring SSL in a Kubernetes Deployment for Bold BI Using kubectl
 
 To configure SSL in your Kubernetes deployment using `kubectl`, follow the steps below. This guide will help you set up SSL by modifying your Ingress YAML file.
 
