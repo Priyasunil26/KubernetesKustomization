@@ -1,4 +1,4 @@
-# Configuring SSL in Kubernetes Deployment Using `kubectl`
+# Configuring SSL in a Kubernetes Deployment Using `kubectl`
 
 To configure SSL in your Kubernetes deployment using `kubectl`, follow the steps below. This guide will help you set up SSL by modifying your Ingress YAML file.
 
@@ -25,7 +25,7 @@ To configure SSL in your Kubernetes deployment using `kubectl`, follow the steps
       tls:
       - hosts:
         - yourdomain.com
-        secretName: your-tls-secret
+        secretName: bold-tls
       rules:
       - host: yourdomain.com
     ```
@@ -43,5 +43,9 @@ To configure SSL in your Kubernetes deployment using `kubectl`, follow the steps
     ```sh
     kubectl describe ingress your-ingress-name
     ```
-![image](https://github.com/Priyasunil26/KubernetesKustomization/assets/158257824/727bc8e7-19ba-4fc5-9887-dc0f361907c8)
 
+7. If you are configuring the site with the HTTPS protocol, please create a secret with SSL cert and keys using the command below.
+
+    ```sh
+    kubectl create secret tls bold-tls -n bold-services --key <key-path> --cert <certificate-path>
+    ```
