@@ -7,7 +7,7 @@ This section provides instructions on how to deploy [Bold BI](https://www.boldbi
 You can deploy Bold BI on your Kubernetes cluster using either Kustomize or Helm. Follow the steps based on your preference:
 
 * [Installation using Kustomize with kubectl](#installation-using-kustomize-with-kubectl)
-* [Installation using Helm](#installation-using-helm)
+* [Installation using Helm](#deployment-using-helm)
 
 ## Prerequisites
 
