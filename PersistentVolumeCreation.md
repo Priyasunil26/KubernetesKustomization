@@ -30,7 +30,7 @@
 
 ## GKE File Store
 
-- Create a [Google filestore instance](https://console.cloud.google.com/filestore)to store the shared folders for application usage.
+- Create a [Google filestore instance](https://cloud.google.com/filestore/docs/create-instance-console)to store the shared folders for application usage.
 - Note the File share name and IP address after creating filestore instance.
 
     ![File Store Details](images/gke_file_share_details.png)
